@@ -1,0 +1,50 @@
+------------------------------------------------------------------------
+r7 | daxdax | 2009-06-27 04:07:27 +0000 (Sat, 27 Jun 2009) | 1 line
+Changed paths:
+   A /tags/release (from /trunk:6)
+
+a log
+------------------------------------------------------------------------
+r6 | daxdax | 2009-06-26 23:16:33 +0000 (Fri, 26 Jun 2009) | 1 line
+Changed paths:
+   A /trunk/trunk (from /trunk:5)
+
+commit message
+------------------------------------------------------------------------
+r5 | daxdax | 2009-06-26 22:21:02 +0000 (Fri, 26 Jun 2009) | 1 line
+Changed paths:
+   A /trunk/TooManyAddons.lua
+   A /trunk/TooManyAddons.toc
+   A /trunk/TooManyAddonsInterface.lua
+   A /trunk/documentation.txt
+
+a message
+------------------------------------------------------------------------
+r4 | daxdax | 2009-06-26 21:36:31 +0000 (Fri, 26 Jun 2009) | 1 line
+Changed paths:
+   D /trunk/documentation.txt
+   D /trunk/test folder
+
+a message
+------------------------------------------------------------------------
+r3 | daxdax | 2009-06-26 02:54:30 +0000 (Fri, 26 Jun 2009) | 2 lines
+Changed paths:
+   A /trunk/test folder
+
+a message
+
+------------------------------------------------------------------------
+r2 | daxdax | 2009-06-26 02:49:36 +0000 (Fri, 26 Jun 2009) | 1 line
+Changed paths:
+   A /trunk/documentation.txt
+
+a commit message
+------------------------------------------------------------------------
+r1 | root | 2009-06-26 01:34:17 +0000 (Fri, 26 Jun 2009) | 1 line
+Changed paths:
+   A /branches
+   A /tags
+   A /trunk
+
+"too-many-addons/mainline: Initial Import"
+------------------------------------------------------------------------

@@ -1,0 +1,32 @@
+## Interface: 70300
+## Title: TooManyAddons
+## Notes: Addon Manager
+## Author: Dax006, angelblue05
+## Version: r47
+## Dependencies:
+## SavedVariables: TMAsettings,TMAdebug
+## SavedVariablesPerCharacter: TMAprofiles, TMAlastgloballoaded
+## X-Category: Interface Enhancements
+## X-Curse-Packaged-Version: release
+## X-Curse-Project-Name: TooManyAddons
+## X-Curse-Project-ID: too-many-addons
+## X-Curse-Repository-ID: wow/too-many-addons/mainline
+## X-Curse-Packaged-Version: r32
+## X-Curse-Project-Name: TooManyAddons
+## X-Curse-Project-ID: too-many-addons
+## X-Curse-Repository-ID: wow/too-many-addons/mainline
+## X-Curse-Packaged-Version: r32
+## X-Curse-Project-Name: TooManyAddons
+## X-Curse-Project-ID: too-many-addons
+## X-Curse-Repository-ID: wow/too-many-addons/mainline
+## X-Curse-Packaged-Version: r37
+## X-Curse-Project-Name: TooManyAddons
+## X-Curse-Project-ID: too-many-addons
+## X-Curse-Repository-ID: wow/too-many-addons/mainline
+## X-Curse-Packaged-Version: r46
+## X-Curse-Project-Name: TooManyAddons
+## X-Curse-Project-ID: too-many-addons
+## X-Curse-Repository-ID: wow/too-many-addons/mainline
+TooManyAddonsInterface.lua
+TooManyAddons.lua
+

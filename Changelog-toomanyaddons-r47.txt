@@ -1,0 +1,24 @@
+------------------------------------------------------------------------
+r47 | angelblue05 | 2017-08-30 |
+
+update for 7.3
+------------------------------------------------------------------------
+r46 | daxdax | 2016-10-29 23:13:00 +0000 (Sat, 29 Oct 2016) | 1 line
+Changed paths:
+   M /trunk/TooManyAddonsInterface.lua
+
+try this again... removed getTitleRegion() call as well
+------------------------------------------------------------------------
+r45 | daxdax | 2016-10-28 22:40:58 +0000 (Fri, 28 Oct 2016) | 1 line
+Changed paths:
+   M /trunk/TooManyAddons.toc
+   M /trunk/TooManyAddonsInterface.lua
+
+removed TitleRegion() due to 7.1 changes
+------------------------------------------------------------------------
+r44 | daxdax | 2016-08-23 01:48:42 +0000 (Tue, 23 Aug 2016) | 1 line
+Changed paths:
+   M /trunk/TooManyAddons.toc
+
+update for 7.0
+------------------------------------------------------------------------
