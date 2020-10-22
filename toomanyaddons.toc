@@ -1,8 +1,8 @@
-## Interface: 70300
+## Interface: 90001
 ## Title: TooManyAddons
 ## Notes: Addon Manager
-## Author: Dax006, angelblue05
-## Version: r47
+## Author: Dax006, angelblue05, Tvalean
+## Version: 9.0
 ## Dependencies:
 ## SavedVariables: TMAsettings,TMAdebug
 ## SavedVariablesPerCharacter: TMAprofiles, TMAlastgloballoaded

@@ -703,7 +703,8 @@ function TMA(input)
 			end
 		elseif (input == "option" or input == "options") then
 			InterfaceOptionsFrame_OpenToCategory("TooManyAddons");
-
+		elseif (input == "resetpos" or input == "resetposition" or input == "resetpositions" or input == "resetwindow" or input == "resetwindows") then
+			TMAResetPosition()
 		else  -- this is for macrophiles who want to go '/tma raid', thus loading a profile with no mouse clicks
 			   --DEFAULT_CHAT_FRAME:AddMessage(input)
 				if(input ~= "") then

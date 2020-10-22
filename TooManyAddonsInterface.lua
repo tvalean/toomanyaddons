@@ -391,6 +391,24 @@ function TMAcreateinterface()
 		end)
 
 
+------------------------ the reset position button [R] ---------------
+
+		TMAresetposbutton = CreateFrame("button",nil,TMAprofileframe,"UIPanelButtonTemplate")
+		TMAresetposbutton:SetWidth(16)
+		TMAresetposbutton:SetHeight(20)
+		TMAresetposbutton:SetPoint("TopRight",TMAoptionbutton,"TopLeft",0,0)
+		TMAresetposbutton:SetText("R")
+		TMAresetposbutton:SetScript("OnClick",function()
+							TMAResetPosition()
+						end)
+		TMAresetposbutton:SetScript("OnEnter",function(self)
+			TMAshowtooltip(self,"Reset Window to default position and widths")
+		end)
+		TMAresetposbutton:SetScript("OnLeave",function()
+			TMAhidetooltip()
+		end)
+
+
 
 		if(TMAincombat) then
 			TMAprint("Cant show dropdowns - in combat.")
@@ -453,6 +471,27 @@ function TMAcreateinterface()
 		TMAcreatepopupoptions()
 
 end  --end make interface
+
+function TMAResetPosition()
+	local TMAprofileframe = getglobal(TMA_PROFILE_LIST_NAME.."frame")
+	local TMAaddonframe = getglobal(TMA_ADDON_LIST_NAME.."frame")
+
+    TMAprofileframe:SetWidth(TMA_FRAME_WIDTH)
+    TMAprofileframe:SetHeight(TMA_FRAME_HEIGHT)
+	TMAprofileframe:ClearAllPoints()
+	TMAprofileframe:SetPoint("topleft",UIParent,"topleft",100,-100)
+	TMAprofileframe:SetPoint("bottomright",UIParent,"topleft",100+TMA_FRAME_WIDTH,-(100+TMA_FRAME_HEIGHT))
+
+    TMAaddonframe:SetWidth((TMA_FRAME_WIDTH_ADDON))
+    TMAaddonframe:SetHeight(TMA_FRAME_HEIGHT)
+	TMAaddonframe:ClearAllPoints()
+	TMAaddonframe:SetPoint("topleft",UIParent,"topleft",100,-100)
+	TMAaddonframe:SetPoint("bottomright",UIParent,"topleft",100+TMA_FRAME_WIDTH,-(100+TMA_FRAME_HEIGHT))
+	TMAaddonframe:ClearAllPoints()
+	TMAaddonframe:SetPoint("topleft", TMAprofileframe, "topright", 150, 0)
+
+	TMAupdate()
+end
 
 function TMAcreatepopupoptions()  --not in use yet
 	TMApopupoptions = CreateFrame("Frame","TMApopupoptions",UIParent,"BackdropTemplate")
@@ -844,6 +883,11 @@ function TMAcreateresizebutton(name)
 	end)
 	TMAresizebutton:SetScript("OnMouseUp",function()
 		ourframe:StopMovingOrSizing()
+		-- Resizing the addon frame unanchors it, so re-anchor it to the profile frame
+		local TMAprofileframe = getglobal(TMA_PROFILE_LIST_NAME.."frame")
+		local TMAaddonframe = getglobal(TMA_ADDON_LIST_NAME.."frame")
+		TMAaddonframe:ClearAllPoints()
+		TMAaddonframe:SetPoint("topleft", TMAprofileframe, "topright", 150, 0)
 		TMAupdate()
 	end)
 
