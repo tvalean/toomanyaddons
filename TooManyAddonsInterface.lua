@@ -452,7 +452,7 @@ function TMAcreateinterface()
 end  --end make interface
 
 function TMAcreatepopupoptions()  --not in use yet
-	TMApopupoptions = CreateFrame("Frame","TMApopupoptions")
+	TMApopupoptions = CreateFrame("Frame","TMApopupoptions",UIParent,"BackdropTemplate")
    --TMApopupoptions:SetPoint("TOP","$UIparent","Bottomright")
    --TMApopupoptions:SetHeight((AS_BUTTON_HEIGHT + AS_FRAMEWHITESPACE )* 4) --4 buttons
    TMApopupoptions:SetHeight((25* 1) + (8 * 2))  --1 buttons
@@ -785,7 +785,7 @@ function TMAcreatechecklist(name)
 		return getglobal(name.."frame")
 	else
 	-- make the global frame
-		local ourframe = CreateFrame("Frame",name.."frame",UIParent)
+		local ourframe = CreateFrame("Frame",name.."frame",UIParent,"BackdropTemplate")
 		ourframe:SetWidth(TMA_FRAME_WIDTH)
 		ourframe:SetHeight(TMA_FRAME_HEIGHT)
 		ourframe:SetPoint("TOPLEFT",200,-200)

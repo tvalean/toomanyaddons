@@ -333,6 +333,7 @@ function TMAinitialize()
 
 -- set the position of our frame
    if TMAprofileframe then
+		TMAprofileframe:ClearAllPoints()
 		if(TMAsettings.profilepoints) then
 			TMAprint("TMAsettings.profilepoints found!")
 			TMAprofileframe:SetPoint("topleft",UIParent,"bottomleft",TMAsettings.profilepoints.left,TMAsettings.profilepoints.top)
@@ -1938,7 +1939,7 @@ function TMAonenterfunction(self)
 		self:SetHighlightTexture("") --disable highlight
 
 		if(not TMAmovetoindicator) then
-			TMAmovetoindicator = CreateFrame("Button","TMAmovetoindicator",ourframe)
+			TMAmovetoindicator = CreateFrame("Button","TMAmovetoindicator",ourframe,"BackdropTemplate")
 		end
 		TMAmovetoindicator:Show()
 		TMAmovetoindicator:SetHeight(2)
