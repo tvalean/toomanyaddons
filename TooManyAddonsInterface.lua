@@ -38,9 +38,12 @@ end
 
 
 
-TMA_FRAME_HEIGHT = 450  --had to halve this, for there are now 2 profile frames
+TMA_FRAME_HEIGHT = 453  --had to halve this, for there are now 2 profile frames.  Also add the value of TMA_BUTTON_VERT_OFFSET
 TMA_FRAME_WIDTH = 250
+TMA_FRAME_WIDTH_ADDON = 500
+TMA_BUTTON_VERT_OFFSET = -5  -- Shift button text down slightly so it lines up better with checkbox
 TMA_HEIGHT_OF_BUTTON = 30
+TMA_GROUPING_BUTTON_WIDTH = 0
 TMA_COLUMN_WIDTH = 180
 TMA_GAP_BETWEEN_BUTTONS = 10
 TMA_ROW_HEIGHT = TMA_HEIGHT_OF_BUTTON - TMA_GAP_BETWEEN_BUTTONS
@@ -75,7 +78,7 @@ function TMAcreateinterface()
 
 
 	TMAaddonframe:SetHeight(TMA_FRAME_HEIGHT + 90)
-	TMAaddonframe:SetWidth(TMA_FRAME_WIDTH)
+	TMAaddonframe:SetWidth(TMA_FRAME_WIDTH_ADDON)
 	TMAaddonframe:SetPoint("topleft",TMAprofileframe,"topright", 150,0)
 	--broken in 7.1  :(
 	--TMAaddonframe:CreateTitleRegion()
@@ -224,7 +227,7 @@ function TMAcreateinterface()
 		TMAchooseglobalbutton:SetWidth(100)
 		TMAchooseglobalbutton:SetHeight(32)
 		TMAchooseglobalbutton:SetPoint("topleft",TMAprofileframe,"topright",25,-32)
-		TMAchooseglobalbutton:SetText("Make Global / Local")
+		TMAchooseglobalbutton:SetText("Global / Local")
 		TMAchooseglobalbutton:SetScript("OnClick",function()
 				TMAswitchtoglobalorlocal()
 						   end)
@@ -786,7 +789,13 @@ function TMAcreatechecklist(name)
 	else
 	-- make the global frame
 		local ourframe = CreateFrame("Frame",name.."frame",UIParent,"BackdropTemplate")
-		ourframe:SetWidth(TMA_FRAME_WIDTH)
+		local myFrameWidth
+		if (name == TMA_ADDON_LIST_NAME) then
+			myFrameWidth = TMA_FRAME_WIDTH_ADDON
+		else
+			myFrameWidth = TMA_FRAME_WIDTH
+		end
+		ourframe:SetWidth(myFrameWidth)
 		ourframe:SetHeight(TMA_FRAME_HEIGHT)
 		ourframe:SetPoint("TOPLEFT",200,-200)
 		ourframe:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -798,7 +807,7 @@ function TMAcreatechecklist(name)
 		ourframe:SetBackdropColor(0,0,0,1)
 		ourframe:SetClampedToScreen()
 		ourframe:SetResizable(true)
-		ourframe:SetMaxResize(TMA_FRAME_WIDTH+50,600)
+		ourframe:SetMaxResize(myFrameWidth+50,600)
 		ourframe:SetMinResize(TMA_FRAME_WIDTH,50)
 		ourframe:SetMovable(true)
 		ourframe:Hide()
@@ -940,9 +949,11 @@ function TMACreateButton(name,i)
 		ournamebutton:SetHeight(TMA_ROW_HEIGHT)
 		ournamebutton:SetWidth(TMA_COLUMN_WIDTH)
 		local ourcheckbutton = getglobal(name.."checkbutton"..i)
-		ournamebutton:SetPoint("TOPLEFT",ourcheckbutton,"TOPRIGHT")
+		ournamebutton:SetPoint("TOPLEFT",ourcheckbutton,"TOPRIGHT", TMA_GROUPING_BUTTON_WIDTH, TMA_BUTTON_VERT_OFFSET)
 		ournamebutton:SetPoint("right",ourframe,"right")
 		ournamebutton:SetNormalFontObject(GameFontNormal)
+		local myFontObject = ournamebutton:GetNormalFontObject()
+		myFontObject:SetJustifyH("LEFT")
 		ournamebutton:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestLogTitleHighlight")
 		--ournamebutton:SetText("Button "..i)
 		ournamebutton:SetScript("OnClick",function()
