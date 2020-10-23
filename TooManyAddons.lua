@@ -748,7 +748,28 @@ function TMA(input)
 
 end
 
+function prepareFonts()
+	local myFontObject = getglobal("TMAButtonFont")
+	if (not(myFontObject)) then
+		myFontObject = CreateFont("TMAButtonFont")
+		myFontObject:CopyFontObject(GameFontNormal)
+		myFontObject:SetJustifyH("LEFT")
+	end
 
+	local mySmallFontObject = getglobal("TMASmallButtonFont")
+	if (not(mySmallFontObject)) then
+		mySmallFontObject = CreateFont("TMASmallButtonFont")
+		mySmallFontObject:CopyFontObject(GameFontNormalSmall)
+		mySmallFontObject:SetJustifyH("LEFT")
+	end
+
+	local myGreenFontObject = getglobal("TMAGreenButtonFont")
+	if (not(myGreenFontObject)) then
+		myGreenFontObject = CreateFont("TMAGreenButtonFont")
+		myGreenFontObject:CopyFontObject(GameFontGreen)
+		myGreenFontObject:SetJustifyH("LEFT")
+	end
+end
 
 
 
@@ -794,7 +815,6 @@ function TMAupdateaddonframe()
 	local TMAaddonframe = getglobal(TMA_ADDON_LIST_NAME.."frame")
     local TMAprofileframe = getglobal(TMA_PROFILE_LIST_NAME.."frame")
 
-
     if not(TMAaddonframe and TMAprofileframe) then return false end;
 	if (#theonetable == 0) then
 		TMAaddonframe:Hide()
@@ -821,7 +841,7 @@ function TMAupdateaddonframe()
 	TMAprint("|cc00aaeeff offset"..offset.."  Rtcf:"..rtcf.."  #TMAaddondisplaylist:"..#TMAaddondisplaylist)
 	TMAhideallbuttons(false,TMA_ADDON_LIST_NAME)
 
-
+	prepareFonts()
 
 	local isthealwaysselected = TMAisthealwaysselected()  --is the always profile currently one of the checked profiles?
 	local currentcollapsebutton,currentcheckbutton,currentbutton, value, ratio
@@ -877,7 +897,7 @@ function TMAupdateaddonframe()
 		end
 		--strink the text on groups??  no, make it green.  No, indent it!  No, different font!
 		if(TMAisgrouped(addonname) and (not TMAisheader(addonname))) then
-			currentbutton:SetNormalFontObject(GameFontNormalSmall)
+			currentbutton:SetNormalFontObject(getglobal("TMASmallButtonFont"))
 			--shrink the buttons
 			currentcheckbutton:GetNormalTexture():SetTexCoord(ratio[1],ratio[2],ratio[3],ratio[4])
 			currentcheckbutton:GetPushedTexture():SetTexCoord(ratio[1],ratio[2],ratio[3],ratio[4])
@@ -885,7 +905,7 @@ function TMAupdateaddonframe()
 			currentcheckbutton:GetHighlightTexture():SetTexCoord(ratio[1],ratio[2],ratio[3],ratio[4])
 			currentcheckbutton:GetDisabledTexture():SetTexCoord(ratio[1],ratio[2],ratio[3],ratio[4])
 		else
-			currentbutton:SetNormalFontObject(GameFontNormal)
+			currentbutton:SetNormalFontObject(getglobal("TMAButtonFont"))
 			currentcheckbutton:GetNormalTexture():SetTexCoord(0,1,0,1)
 			currentcheckbutton:GetPushedTexture():SetTexCoord(0,1,0,1)
 			currentcheckbutton:GetCheckedTexture():SetTexCoord(0,1,0,1)
@@ -1041,6 +1061,7 @@ function TMAupdateprofileframe()
 
     if not(TMAaddonframe and TMAprofileframe) then return false end;
 
+	prepareFonts()
 
     local ourscrollbar = getglobal(TMA_PROFILE_LIST_NAME.."scrollbarScrollBar")
     local ourscrollbarframe = getglobal(TMA_PROFILE_LIST_NAME.."scrollbar")
@@ -1085,7 +1106,7 @@ function TMAupdateprofileframe()
         --display valid item in current button
         numtodisplay = offset + i
 
-		currentbutton:SetNormalFontObject(GameFontNormal);   --reset color
+		currentbutton:SetNormalFontObject(getglobal("TMAButtonFont"));   --reset color
 		currentbutton.tooltip = nil
 		currentcheckbutton:SetChecked(false)
 		insertcolor = ""
@@ -1105,7 +1126,7 @@ function TMAupdateprofileframe()
 			end
 		else
 			if(TMAislastloaded(numtodisplay))  then 		--show last profile in green
-				currentbutton:SetNormalFontObject(GameFontGreen);
+				currentbutton:SetNormalFontObject(getglobal("TMAGreenButtonFont"));
 				currentbutton.tooltip = "Green profiles are your most recently loaded profiles."
 			end
 		end
