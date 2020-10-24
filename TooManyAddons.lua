@@ -641,22 +641,18 @@ end
 
 
 function TMAcreatealwaysprofile()
-	--TMAprint("|cc00aaffff createalwaysprofile called")
+	TMAprint("|cc00aaffff createalwaysprofile called")
    local thealwaysprofile
    thealwaysprofile=TMAgetprofilenum(TMAALWAYSPROFILE)
-
-
-   if not (thealwaysprofile) then
+	if not (thealwaysprofile) then
 		-- create the 'always' profile :)
 		table.insert(theonetable,{})
 		theonetable[#theonetable].isglobal = false
 		theonetable[#theonetable].profilename = TMAALWAYSPROFILE
 		theonetable[#theonetable]["TooManyAddons"] = true  -- case matters :(
-
 	end
 
 end
-
 
 -- when someone clicks the button or types /tma this is called
 function TMA(input)
@@ -679,12 +675,11 @@ function TMA(input)
 			 end
 
 		elseif (input == "test" and TMAdebug) then
-			 TMAprint("Running our Test code.")
+			UpdateAddOnMemoryUsage()
+			TMAprint("Currently using " .. GetAddOnMemoryUsage("TooManyAddons"))
 
-				TMAsettings.globalprofiles = {}
-				TMAupdate()
-
-
+			TMAsettings.globalprofiles = {}
+			TMAupdate()
 
 		elseif (input == "debug") then
 			TMAdebug = not TMAdebug
@@ -781,8 +776,6 @@ function TMAupdate()
 	TMAupdateaddonframe()
 
 	TMAupdateprofileframe()
-
-	TMAupdateglobalprofileframe()
 
 --sort dropdown
    if(TMAsortmethodnum) then
@@ -1177,98 +1170,6 @@ function TMAlocalorglobalbuttonstuff()  --you know, that 'convert to whatever' b
 	end
 end
 
-
-
-
-function TMAupdateglobalprofileframe()  --not in use
---[[
-    ------------------=================----------------
-    --now do it all again for the GLOBAL profile list  --!!  yey   !!
-    ---------------------------------------------------
-	local profilename
-	--local profilepointer
-    local globalprofileframe = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."frame")
-
-    if not(globalprofileframe) then return false end;
-
-	if(TMAaltlayout == true) then  --:)
-		globalprofileframe:Hide()
-		return
-	else
-		globalprofileframe:Show()
-	end
-
-
-    local ourscrollbar = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."scrollbarScrollBar")
-    local ourscrollbarframe = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."scrollbar")
-    local newheight = (#TMAsettings.globalprofiles + 2) * TMA_ROW_HEIGHT  --no idea why the 2 but its needed
-
-    globalprofileframe:SetHeight(math.min(TMA_FRAME_HEIGHT,newheight))
-    if(newheight < TMA_FRAME_HEIGHT) then
-        ourscrollbar:Hide()
-        ourscrollbarframe:Hide()
-    else
-        ourscrollbar:Show()
-        ourscrollbarframe:Show()
-    end
-
-
-    --figure out how many rows can fit
-    local rtcf = TMArowsthatcanfit(TMA_GLOBAL_PROFILE_LIST_NAME)
-    --set scroll bar limits
-    ourscrollbar:SetMinMaxValues(0,math.max((#TMAsettings.globalprofiles)-rtcf,0))
-    --get the scroll bar value
-	offset = ourscrollbar:GetValue()
-
-    TMAhideallbuttons(true) --this is when we redraw the size of the frames
-
-    --create that many buttons and check buttons
-    for i=1,rtcf do
-
-        --check if the button exists already  --checkbutton firsr, then regular button
-        currentcheckbutton = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."checkbutton"..i)
-        if not currentcheckbutton then
-            TMAcreateglobalprofilerows(i)
-			currentcheckbutton = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."checkbutton"..i)
-        end
-        currentbutton = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."button"..i)
-
-
-
-        --display valid item in current button
-        numtodisplay = offset + i
-        --set text
-
-        if(TMAsettings.globalprofiles[numtodisplay] and TMAsettings.globalprofiles[numtodisplay].profilename) then
-			profilename = TMAsettings.globalprofiles[numtodisplay].profilename
-			--currentcheckbutton.number = numtodisplay
-			currentcheckbutton.number = numtodisplay+#TMAprofiles  --so global profiles will always have a number higher than the number given to local profiles.   lets see how it goes.
-
-            currentbutton:SetText(profilename)
-            currentbutton:Show()
-            currentcheckbutton:Show()
-        else
-           currentcheckbutton:Hide()
-           currentbutton:Hide()
-        end
-
-		--show last loaded as green
-		if(TMAislastloaded(numtodisplay))  then --true for global
-			currentbutton:SetNormalFontObject(GameFontNormal);
-			tmafont = currentbutton:GetNormalFontObject();
-			tmafont:SetTextColor(.1, 1, 0.3, 1.0); --green?
-			currentbutton:SetNormalFontObject(tmafont);
-		else
-			currentbutton:SetNormalFontObject(GameFontNormal);
-		end
-
-		currentcheckbutton:SetChecked(false)
-   end
-   ]]
-end
-
-
-
 function TMAgamemenubuttonstuff()
 	if (TMAhidegamemenubutton == true) then
 		TMAgamemenubutton:Hide()
@@ -1359,8 +1260,6 @@ end
 
 -------------------{}{}{}{}{}{}[][][][][][]{}{}{}{}{}--------------------------
 function TMAhideallbuttons(global,name)
-
-	if not name then name = TMA_GLOBAL_PROFILE_LIST_NAME end;
     local i = 1
     local myexit,currentcheckbutton,currentbutton
     while (not myexit) do
@@ -1612,46 +1511,27 @@ function TMAloadprofile(profile)
 	end
 end
 
-function TMAcreatenewprofile(isglobal)
+function TMAcreatenewprofile()
 	local scrollbar,smin,smax
 	local profilename
 
-	if(isglobal == true) then
-
-		profilename = TMAnewglobalprofileeditbox:GetText()
-		--clear all the other selected ones
-		for i=1,#theonetable do
+	--clear all the other selected ones
+	for i=1,#theonetable do
+		if(theonetable[i] and theonetable[i].isselected) then
 			theonetable[i].isselected = false
 		end
-
-		theonetable[#theonetable].profilename = profilename
-		theonetable[#theonetable].isglobal = true
-		theonetable[#theonetable].isselected = true
-		TMAnewglobalprofileeditbox:SetText("")
-		scrollbar = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."scrollbarScrollBar")
-
-	else
-
-
-		--clear all the other selected ones
-		for i=1,#theonetable do
-			if(theonetable[i] and theonetable[i].isselected) then
-				theonetable[i].isselected = false
-			end
-		end
-
-
-		theonetable[#theonetable+1] = {}
-		profilename = TMAnewprofileeditbox:GetText()
-		if not profilename then profilename = "" end;
-		theonetable[#theonetable].profilename = profilename
-		theonetable[#theonetable].isglobal = false
-		theonetable[#theonetable].isselected = true
-		TMAnewprofileeditbox:SetText("")
-		scrollbar = getglobal(TMA_PROFILE_LIST_NAME.."scrollbarScrollBar")
-
-
 	end
+
+
+	theonetable[#theonetable+1] = {}
+	profilename = TMAnewprofileeditbox:GetText()
+	if not profilename then profilename = "" end;
+	theonetable[#theonetable].profilename = profilename
+	theonetable[#theonetable].isglobal = false
+	theonetable[#theonetable].isselected = true
+	TMAnewprofileeditbox:SetText("")
+	scrollbar = getglobal(TMA_PROFILE_LIST_NAME.."scrollbarScrollBar")
+
 	TMAupdate()
 	smin,smax = scrollbar:GetMinMaxValues()
 	scrollbar:SetValue(smax) --since the profile should always be added at the end, its ok to scroll to the end
@@ -1813,10 +1693,6 @@ function TMAShowAddonTooltip(frame)
 	end
 
 end
-
-
-
-
 
 
 function TMAprofilelistbutton_onclick(self)
