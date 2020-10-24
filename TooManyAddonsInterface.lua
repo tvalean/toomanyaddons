@@ -50,7 +50,6 @@ TMA_ROW_HEIGHT = TMA_HEIGHT_OF_BUTTON - TMA_GAP_BETWEEN_BUTTONS
 TMA_ROWS_THAT_CAN_FIT = math.floor(TMA_FRAME_HEIGHT / TMA_ROW_HEIGHT)
 TMA_ADDON_LIST_NAME = "TMAaddonlist"
 TMA_PROFILE_LIST_NAME = "TMAprofilelist"
-TMA_GLOBAL_PROFILE_LIST_NAME = "TMAglobalprofilelist"
 TMAALWAYSPROFILE = "Always Load These Addons"
 --TMAGLOBALALWAYSPROFILE = "Always Always Load These Addons"
 TMACHARSTOCOMP = 4
@@ -65,17 +64,13 @@ function TMAcreateinterface()
 	-- create our frames
 	TMAcreatechecklist(TMA_ADDON_LIST_NAME)
 	TMAcreatechecklist(TMA_PROFILE_LIST_NAME)
-	TMAcreatechecklist(TMA_GLOBAL_PROFILE_LIST_NAME)
 
 	local TMAaddonframe = getglobal(TMA_ADDON_LIST_NAME.."frame")
 	local TMAprofileframe = getglobal(TMA_PROFILE_LIST_NAME.."frame")
-	local TMAglobalprofileframe = getglobal(TMA_GLOBAL_PROFILE_LIST_NAME.."frame")
 
 	--wowwiki says this will make frames closable with 'esc'
 	tinsert(UISpecialFrames,TMAaddonframe:GetName());
 	tinsert(UISpecialFrames,TMAprofileframe:GetName());
-	tinsert(UISpecialFrames,TMAglobalprofileframe:GetName());
-
 
 	TMAaddonframe:SetHeight(TMA_FRAME_HEIGHT + 90)
 	TMAaddonframe:SetWidth(TMA_FRAME_WIDTH_ADDON)
@@ -92,11 +87,6 @@ function TMAcreateinterface()
 	TMAprofileframe:EnableMouse(true)
 	TMAaddonframe:SetMovable(false)
 	TMAaddonframe:EnableMouse(false)
-
-	TMAglobalprofileframe:SetHeight(100)
-	TMAglobalprofileframe:SetWidth(TMA_FRAME_WIDTH)
-	TMAglobalprofileframe:SetPoint("topleft",TMAprofileframe,"bottomleft", 0,-90)
-
 
 	local ourscrollbar = getglobal(TMA_PROFILE_LIST_NAME.."scrollbar")
 
@@ -183,42 +173,6 @@ function TMAcreateinterface()
 			end)
 			TMAnewprofileeditbox:SetScript("OnEditFocusGained",function()
 					TMAnewprofileeditbox:SetText("")
-			end)
-
-
-			------------ create new GLOBAL profile button
-		TMAcreatenewglobalprofilebutton = CreateFrame("Button",nil,TMAglobalprofileframe,"UIPanelButtonTemplate")
-		TMAcreatenewglobalprofilebutton:SetHeight(32)
-		TMAcreatenewglobalprofilebutton:SetWidth(120)
-		TMAcreatenewglobalprofilebutton:SetText("New Global Profile")
-		TMAcreatenewglobalprofilebutton:SetPoint("bottomLEFT",TMAglobalprofileframe,"Topleft",0,0)
-		TMAcreatenewglobalprofilebutton:SetNormalFontObject("GameFontNormalSmall");
-		TMAcreatenewglobalprofilebutton:SetHighlightFontObject("GameFontHighlightSmall");
-		--TMAcreatenewglobalprofilebutton:SetPoint("TOPLEFT")
-		TMAcreatenewglobalprofilebutton:SetScript("OnClick",function()
-			TMAcreatenewprofile(true)
-
-		end)
-
--- -------------------------the edit box for global
-		TMAnewglobalprofileeditbox = CreateFrame("EditBox",nil,TMAglobalprofileframe,"InputBoxTemplate")
-			TMAnewglobalprofileeditbox:SetFocus()
-			TMAnewglobalprofileeditbox:SetAutoFocus(false)
-			TMAnewglobalprofileeditbox:SetHeight(32)
-			TMAnewglobalprofileeditbox:SetWidth(100)
-			TMAnewglobalprofileeditbox:SetText("Global Profile")
-			TMAnewglobalprofileeditbox:SetPoint("LEFT",TMAcreatenewglobalprofilebutton,"RIGHT",4,0)
-			TMAnewglobalprofileeditbox:SetFrameLevel(3)
-			TMAnewglobalprofileeditbox:SetScript("OnEscapePressed",function()
-				TMAnewglobalprofileeditbox:ClearFocus()
-				TMAupdate()
-			end)
-			TMAnewglobalprofileeditbox:SetScript("OnEnterPressed",function()
-				TMAcreatenewglobalprofilebutton:Click()
-
-			end)
-			TMAnewglobalprofileeditbox:SetScript("OnEditFocusGained",function()
-					TMAnewglobalprofileeditbox:SetText("")
 			end)
 
 
@@ -532,27 +486,6 @@ function TMAcreatepopupoptions()  --not in use yet
 	   end
    end)
 
-   --make a global profile - somehow
-   TMAcreateglobalprofilebutton = CreateFrame("Button",nil,TMApopupoptions)
-   TMAcreateglobalprofilebutton:SetHeight(25)
-   TMAcreateglobalprofilebutton:SetWidth(TMApopupoptions:GetWidth())
-   TMAcreateglobalprofilebutton:SetPoint("top",0,-8)
-   TMAcreateglobalprofilebutton:SetNormalFontObject("gamefontnormal")
-   TMAcreateglobalprofilebutton:SetText("create global profile?")
-   TMAcreateglobalprofilebutton:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestLogTitleHighlight")
-   --TMAcreateglobalprofilebutton:SetFrameStrata("DIALOG")  --did 5.0 remove this func?
-   --TMAcreateglobalprofilebutton:SetBackdropColor(0,0,0,.2)
-   TMAcreateglobalprofilebutton:SetScript("OnClick",function(self)
-		TMAcreateglobalprofile(self)
-
-   end)
-
-
-end
-
-function TMAcreateglobalprofile(self)
-	TMAprint("Creating global profile")
-	TMApopupoptions:Hide()
 end
 
 
@@ -787,39 +720,6 @@ function TMAcreateprofilerows(i)
 
 
 end
-
-
-function TMAcreateglobalprofilerows(i)
-
-    local currentcheckbutton = TMACreateCheckButton(TMA_GLOBAL_PROFILE_LIST_NAME,i)
-    currentcheckbutton:SetScript("OnEnter",function(self)
-		TMAonenterfunction(self)
-	end)
-
-    currentcheckbutton:SetScript("OnLeave",function()
-
-        TMAhidetooltip()
-    end)
-    currentcheckbutton:SetScript("OnClick",function(self)
-		TMAprofilelistbutton_onclick(self)
-    end)
-
-    local currentbutton = TMACreateButton(TMA_GLOBAL_PROFILE_LIST_NAME,i)
-    currentbutton:SetScript("OnEnter",function(self)
-		TMAonenterfunction(self)
-    end)
-    currentbutton:SetScript("OnLeave",function()
-        TMAhidetooltip()
-    end)
-	currentbutton:SetScript("OnMouseDown",function(self,button,down)
-
-		TMApopupoptions:SetParent(self)
-		if(button =="RightButton") then
-			TMApopupoptions:Show()
-		end
-	end)
-end
-
 
 function TMAcreatechecklist(name)
 	if(getglobal(name.."frame")) then
