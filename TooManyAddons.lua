@@ -651,7 +651,7 @@ function TMAcreatealwaysprofile()
 		table.insert(theonetable,{})
 		theonetable[#theonetable].isglobal = false
 		theonetable[#theonetable].profilename = TMAALWAYSPROFILE
-		theonetable[#theonetable]["toomanyaddons"] = true  -- case matters :(
+		theonetable[#theonetable]["TooManyAddons"] = true  -- case matters :(
 
 	end
 
