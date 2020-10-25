@@ -2,7 +2,7 @@
 ## Title: TooManyAddons
 ## Notes: Addon Manager
 ## Author: Dax006, angelblue05, Tvalean
-## Version: 9.0.1
+## Version: 9.02
 ## Dependencies:
 ## SavedVariables: TMAsettings,TMAdebug
 ## SavedVariablesPerCharacter: TMAprofiles, TMAlastgloballoaded

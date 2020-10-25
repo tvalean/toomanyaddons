@@ -256,12 +256,18 @@ function TMAinitialize()
     --create master list of addons storing date first seen
     if not (TMAsettings.dates) then
         TMAsettings.dates = {}
-    end
-    for i = 1,GetNumAddOns() do
-       name,title,_, _, _, _, _ = GetAddOnInfo(i)
-       if not (TMAsettings.dates[name]) then
-           TMAsettings.dates[name] = date("%y%m%d")
-       end
+	end
+
+	if (TMAsettings.dates["toomanyaddons"]) then  -- Needed due to module name case change.  Give it a year to propagate.  Take it out in 2022
+		TMAsettings.dates["TooManyAddons"] = TMAsettings.dates["toomanyaddons"]
+		TMAsettings.dates["toomanyaddons"] = nil
+	end
+			
+		for i = 1,GetNumAddOns() do
+       	name,title,_, _, _, _, _ = GetAddOnInfo(i)
+	   	if not (TMAsettings.dates[name]) then
+			TMAsettings.dates[name] = date("%y%m%d")
+       	end
 	end
 
 	-----------global profile stuff
@@ -273,12 +279,27 @@ function TMAinitialize()
    if not TMAsettings.servers[serverName] then
       TMAsettings.servers[serverName] = {}
    end
-   -- if nothing existed, create it all from scratch (the defauts)
-	if not TMAsettings.servers[serverName][playerName] then
+
+    -- if nothing existed, create it all from scratch (the defauts)
+    if not TMAsettings.servers[serverName][playerName] then
 		TMAsettings.servers[serverName][playerName] = {}
 	end
 
-	--TMAprofiles = TMAsettings.servers[serverName][playerName]  --this is our local copy
+	for fixserver in pairs(TMAsettings.servers) do -- Needed due to module name case change.  Give it a year to propagate.  Take it out in 2022
+		TMAprint(fixserver)
+
+	for fixplayer in pairs(TMAsettings.servers[fixserver]) do
+
+		for k = 1, #TMAsettings.servers[fixserver][fixplayer] do
+			if (TMAsettings.servers[fixserver][fixplayer][k]["toomanyaddons"] ~= nil) then
+				TMAsettings.servers[fixserver][fixplayer][k]["TooManyAddons"] = TMAsettings.servers[fixserver][fixplayer][k]["toomanyaddons"]
+				TMAsettings.servers[fixserver][fixplayer][k]["toomanyaddons"] = nil
+			end
+		end
+	end
+end
+
+--TMAprofiles = TMAsettings.servers[serverName][playerName]  --this is our local copy
 	local profiles = TMAsettings.servers[serverName][playerName]  --this is our local copy
 
 	--sort methods
@@ -303,6 +324,10 @@ function TMAinitialize()
 	--global profiles, add to theonetable
 	for i = 1,#TMAsettings.globalprofiles do
 		theonetable[i] = TMAsettings.globalprofiles[i]
+		if (theonetable[i]["toomanyaddons"]) then -- Needed due to module name case change.  Give it a year to propagate.  Take it out in 2022
+			theonetable[i]["TooManyAddons"] = true
+		end
+		theonetable[i]["toomanyaddons"] = nil
 		theonetable[i].isglobal = true
 		theonetable[i].islastloaded = false
 		--dont use the 'lastloaded' value saved in the global table because we need it to be different per character
@@ -650,6 +675,9 @@ function TMAcreatealwaysprofile()
 		theonetable[#theonetable].isglobal = false
 		theonetable[#theonetable].profilename = TMAALWAYSPROFILE
 		theonetable[#theonetable]["TooManyAddons"] = true  -- case matters :(
+	elseif (theonetable[thealwaysprofile]["toomanyaddons"]) then -- .. because case matters, then we changed the case for the addon
+		theonetable[thealwaysprofile]["toomanyaddons"] = nil
+		theonetable[thealwaysprofile]["TooManyAddons"] = true
 	end
 
 end
@@ -1503,7 +1531,7 @@ function TMAloadprofile(profile)
 
 	elseif(TMAdebug) then
 		TMAprint("TESTING.  Ctrl or shift down to RELOaD()")
-		TMAprint(theonetable)
+		--TMAprint(theonetable)
 		--EnableAddOn("TooManyAddons")
 	else
 		ReloadUI()
